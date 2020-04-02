@@ -1,27 +1,6 @@
 import axios from 'axios';
-import { FETCH_USER, CREATE_PERSON } from './types';
+import { FETCH_USER, FETCH_PEOPLE } from './types';
 import history from '../history';
-
-const seperateFormValues = input => {
-    let simplifiedObj = {};
-    let questions = [];
-    let preferences = [];
-    Object.keys(input).forEach(key => {
-        const value = input[key];
-        if (key === 'name') {
-            simplifiedObj.name = value;
-        }
-        if (key[0] === 'Q' && key[7] === 'n') {
-            questions.push(value);
-        }
-        if (key[0] === 'P' && key[9] === 'e') {
-            preferences.push(value);
-        }
-    });
-    simplifiedObj.questions = questions;
-    simplifiedObj.pref = preferences;
-    return simplifiedObj;
-};
 
 export const fetchUser = () => async dispatch => {
     const res = await axios.get('/api/current_user');
@@ -33,9 +12,18 @@ export const fetchUser = () => async dispatch => {
 
 export const submitPerson = values => async dispatch => {
     console.log('submitPerson Ran');
-    const load = seperateFormValues(values);
-    const res = await axios.post('/api/person', load);
+    // console.log(values);
 
-    dispatch({ type: CREATE_PERSON, payload: res.data });
-    history.push('/');
+    const res = await axios.post('/api/person', values);
+
+    //console.log(res);
+    history.push('/data/list');
+    //dispatch({ type: CREATE_PERSON, payload: res.data });
+};
+
+export const fetchPeople = () => async dispatch => {
+    const response = await axios.get('/api/people');
+    // console.log('fetchPeople ran');
+    //console.log(response.data);
+    dispatch({ type: FETCH_PEOPLE, payload: response.data });
 };

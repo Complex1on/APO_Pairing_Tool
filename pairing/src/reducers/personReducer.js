@@ -1,9 +1,10 @@
-import { CREATE_PERSON } from '../actions/types';
+import _ from 'lodash';
+import { FETCH_PEOPLE } from '../actions/types';
 
-export default (state = [], action) => {
+export default (state = {}, action) => {
     switch (action.type) {
-        case CREATE_PERSON:
-            console.log('Creating person in person reducer');
+        case FETCH_PEOPLE:
+            return action.payload;
         default:
             return state;
     }
