@@ -14,7 +14,7 @@ class GoogleAuth extends React.Component {
         }
     }
     render() {
-        console.log(this.props);
+        //console.log(this.props);
         return (
             <button className="ui red google button">
                 <i className="google icon" />

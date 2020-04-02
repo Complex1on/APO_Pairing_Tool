@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { submitPerson } from '../../actions';
 import { Field, reduxForm, clearSubmitErrors } from 'redux-form';
 
 class DataCreate extends React.Component {
@@ -23,18 +25,29 @@ class DataCreate extends React.Component {
         );
     };
 
-    onSubmit(formValues) {
-        console.log(formValues);
-    }
+    onSubmit = formValues => {
+        console.log(formValues + this.props.auth);
 
-    renderQuestions = numQ => {
-        let string = '';
-        let temp;
-        for (let i = 0; i < numQ; i++) {
-            temp = ``;
-        }
+        //submitPerson(formValues);
+    };
+
+    renderQuestions = (numQ, type) => {
+        return numQ.map(el => {
+            let labelText = `Enter ${type} ${el}`;
+            let questionName = `${type}${el}`;
+
+            return (
+                <Field
+                    key={questionName + el}
+                    name={questionName}
+                    component={this.renderInput}
+                    label={labelText}
+                />
+            );
+        });
     };
     render() {
+        // Want to change renderQuestions Array to a prop
         return (
             <form
                 onSubmit={this.props.handleSubmit(this.onSubmit)}
@@ -45,22 +58,15 @@ class DataCreate extends React.Component {
                     component={this.renderInput}
                     label="Enter Name"
                 />
-                <Field
-                    name="question1"
-                    component={this.renderInput}
-                    label="Enter Question 1"
-                />
-                <Field
-                    name="question2"
-                    component={this.renderInput}
-                    label="Enter Quesiton 2"
-                />
-                <Field
-                    name="question3"
-                    component={this.renderInput}
-                    label="Enter Question 3"
-                />
-                <button className="ui button primary">Submit</button>
+
+                {this.renderQuestions([1, 2, 3], 'Question')}
+                {this.renderQuestions([1, 2, 3], 'Preference')}
+                <button
+                    className="ui button primary"
+                    onSubmit={this.onSubmit()}
+                >
+                    Submit
+                </button>
             </form>
         );
     }
@@ -87,7 +93,14 @@ const validate = formValues => {
     return errors;
 };
 
+const mapStateToProps = state => {
+    return {
+        values: state.form.formValues,
+        auth: state.auth
+    };
+};
+let test = connect(mapStateToProps)(DataCreate);
 export default reduxForm({
     form: 'dataCreate',
     validate
-})(DataCreate);
+})(test);
