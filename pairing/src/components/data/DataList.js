@@ -9,19 +9,22 @@ class DataList extends React.Component {
     }
 
     renderPeople = peopleObj => {
-        console.log('people obj');
-        console.log(peopleObj);
-
         return Object.keys(peopleObj).map(key => {
             const value = peopleObj[key];
             return (
-                <div className="item" key={value.name + value.id}>
+                <div className="item" key={value._id}>
                     <div className="content">
                         <h1 className="header">{value.name}</h1>
                         <div className="description">
                             questions {value.questions} ||| preferences
                             {value.preferences}
                             <div className="right floated content">
+                                <Link
+                                    to={`/data/edit/${value._id}`}
+                                    className="ui button primary"
+                                >
+                                    Edit
+                                </Link>
                                 <Link
                                     to={`/data/delete/${value._id}`}
                                     className="ui button negative"
@@ -36,6 +39,16 @@ class DataList extends React.Component {
         });
     };
 
+    renderCreate() {
+        return (
+            <div style={{ textAlign: 'right' }}>
+                <Link to="/data/new" className="ui button primary">
+                    Add a Person
+                </Link>
+            </div>
+        );
+    }
+
     render() {
         return (
             <div>
@@ -43,6 +56,7 @@ class DataList extends React.Component {
                 <div className="ui celled list">
                     {this.renderPeople(this.props.people)}
                 </div>
+                {this.renderCreate()}
             </div>
         );
     }

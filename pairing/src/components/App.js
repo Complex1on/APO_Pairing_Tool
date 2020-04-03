@@ -11,7 +11,6 @@ import DataList from './data/DataList';
 import DataShow from './data/DataShow'; //Think about what to do about show
 import Header from './Header';
 import Landing from './Landing';
-import { render } from 'react-dom';
 
 class App extends React.Component {
     componentDidMount() {

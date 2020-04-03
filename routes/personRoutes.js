@@ -55,7 +55,17 @@ module.exports = app => {
             const removePerson = await Person.remove({
                 _id: req.params.personId
             });
+            //console.log(removePerson);
             res.json(removePerson);
+        } catch (err) {
+            res.json({ message: err });
+        }
+    });
+
+    app.get('/api/find/:personId', async (req, res) => {
+        try {
+            const person = await Person.find({ _id: req.params.personId });
+            res.json(person);
         } catch (err) {
             res.json({ message: err });
         }

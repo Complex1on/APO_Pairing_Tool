@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field, reduxForm, clearSubmitErrors } from 'redux-form';
+import { connect } from 'react-redux';
 
 class DataCreate extends React.Component {
     renderError({ error, touched }) {
@@ -57,8 +58,8 @@ class DataCreate extends React.Component {
                     label="Enter Name"
                 />
 
-                {this.renderQuestions([1, 2, 3], 'Question')}
-                {this.renderQuestions([1, 2, 3], 'Preference')}
+                {this.renderQuestions(this.props.numQ, 'Question')}
+                {this.renderQuestions(this.props.numQ, 'Preference')}
                 <button className="ui button primary" onSubmit={this.onSubmit}>
                     Submit
                 </button>
@@ -88,7 +89,13 @@ const validate = formValues => {
     return errors;
 };
 
+const mapStateToProps = state => {
+    return { numQ: state.numQ };
+};
+
+let dataCreateOne = connect(mapStateToProps, {})(DataCreate);
+
 export default reduxForm({
     form: 'dataCreate',
     validate
-})(DataCreate);
+})(dataCreateOne);
