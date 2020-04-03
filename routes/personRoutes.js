@@ -49,4 +49,15 @@ module.exports = app => {
 
         res.send(people);
     });
+
+    app.delete('/api/delete/:personId', async (req, res) => {
+        try {
+            const removePerson = await Person.remove({
+                _id: req.params.personId
+            });
+            res.json(removePerson);
+        } catch (err) {
+            res.json({ message: err });
+        }
+    });
 };

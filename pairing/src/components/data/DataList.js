@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchPeople } from '../../actions';
+import { Link } from 'react-router-dom';
 
 class DataList extends React.Component {
     componentDidMount() {
@@ -18,8 +19,16 @@ class DataList extends React.Component {
                     <div className="content">
                         <h1 className="header">{value.name}</h1>
                         <div className="description">
-                            <h4>questions</h4> {value.questions}
-                            <h4>preferences</h4> {value.preferences}
+                            questions {value.questions} ||| preferences
+                            {value.preferences}
+                            <div className="right floated content">
+                                <Link
+                                    to={`/data/delete/${value._id}`}
+                                    className="ui button negative"
+                                >
+                                    Delete
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -31,7 +40,7 @@ class DataList extends React.Component {
         return (
             <div>
                 <h1>Tesing Data List</h1>
-                <div className="ui list">
+                <div className="ui celled list">
                     {this.renderPeople(this.props.people)}
                 </div>
             </div>

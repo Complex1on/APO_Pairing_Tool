@@ -8,9 +8,17 @@ class GoogleAuth extends React.Component {
             case null:
                 return;
             case false:
-                return <a href="/auth/google">Login with Google</a>;
+                return (
+                    <a className="ui" href="/auth/google">
+                        Login with Google
+                    </a>
+                );
             default:
-                return <a href="/api/logout">logout</a>;
+                return (
+                    <a className="ui" href="/api/logout">
+                        logout
+                    </a>
+                );
         }
     }
     render() {

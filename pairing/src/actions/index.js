@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_USER, FETCH_PEOPLE } from './types';
+import { FETCH_USER, FETCH_PEOPLE, DELETE_PERSON } from './types';
 import history from '../history';
 
 export const fetchUser = () => async dispatch => {
@@ -26,4 +26,10 @@ export const fetchPeople = () => async dispatch => {
     // console.log('fetchPeople ran');
     //console.log(response.data);
     dispatch({ type: FETCH_PEOPLE, payload: response.data });
+};
+
+export const deletePerson = id => async dispatch => {
+    const response = await axios.delete(`/api/delete/${id}`);
+    dispatch({ type: DELETE_PERSON, payload: response.data });
+    history.push('/data/list');
 };

@@ -32,12 +32,12 @@ class App extends React.Component {
                                 component={DataCreateMaster}
                             />
                             <Route
-                                path="/data/edit"
+                                path="/data/edit/:personId"
                                 exact
                                 component={DataEdit}
                             />
                             <Route
-                                path="/data/delete"
+                                path="/data/delete/:personId"
                                 exact
                                 component={DataDelete}
                             />
