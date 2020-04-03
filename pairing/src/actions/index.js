@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { FETCH_USER, FETCH_PEOPLE, DELETE_PERSON } from './types';
+import {
+    FETCH_USER,
+    FETCH_PEOPLE,
+    DELETE_PERSON,
+    FIND_PERSON,
+    EDIT_PERSON
+} from './types';
 import history from '../history';
 
 export const fetchUser = () => async dispatch => {
@@ -11,10 +17,7 @@ export const fetchUser = () => async dispatch => {
 };
 
 export const submitPerson = values => async dispatch => {
-    console.log('submitPerson Ran');
-    // console.log(values);
-
-    const res = await axios.post('/api/person', values);
+    await axios.post('/api/person', values);
 
     //console.log(res);
     history.push('/data/list');
@@ -32,4 +35,13 @@ export const deletePerson = id => async dispatch => {
     const response = await axios.delete(`/api/delete/${id}`);
     dispatch({ type: DELETE_PERSON, payload: response.data });
     history.push('/data/list');
+};
+export const editPerson = (id, values) => async dispatch => {
+    await axios.patch(`/api/edit/${id}`, values);
+
+    history.push('/data/list');
+};
+export const fetchPerson = id => async dispatch => {
+    const response = await axios.get(`/api/find/${id}`);
+    dispatch({ type: FIND_PERSON, payload: response.data });
 };

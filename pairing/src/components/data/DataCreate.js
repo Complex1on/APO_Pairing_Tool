@@ -46,7 +46,20 @@ class DataCreate extends React.Component {
         });
     };
     render() {
-        // Want to change renderQuestions Array to a prop
+        let numberOfQuestions = [];
+        if (this.props.editing === 'true') {
+            // Calculates the number of questions needed to be rendered to edit
+            // so no conflict between that and numQ user has selected
+            Object.keys(this.props.person).map(key => {
+                const value = this.props.person[key];
+                for (let i = 0; i < value.questions.length; i++) {
+                    numberOfQuestions.push(i + 1);
+                }
+            });
+        } else {
+            numberOfQuestions = this.props.numQ;
+        }
+
         return (
             <form
                 onSubmit={this.props.handleSubmit(this.onSubmit)}
@@ -58,8 +71,8 @@ class DataCreate extends React.Component {
                     label="Enter Name"
                 />
 
-                {this.renderQuestions(this.props.numQ, 'Question')}
-                {this.renderQuestions(this.props.numQ, 'Preference')}
+                {this.renderQuestions(numberOfQuestions, 'Question')}
+                {this.renderQuestions(numberOfQuestions, 'Preference')}
                 <button className="ui button primary" onSubmit={this.onSubmit}>
                     Submit
                 </button>
@@ -90,12 +103,13 @@ const validate = formValues => {
 };
 
 const mapStateToProps = state => {
-    return { numQ: state.numQ };
+    return { numQ: state.numQ, person: state.people };
 };
 
 let dataCreateOne = connect(mapStateToProps, {})(DataCreate);
 
 export default reduxForm({
     form: 'dataCreate',
-    validate
+    validate,
+    enableReinitialize: true
 })(dataCreateOne);

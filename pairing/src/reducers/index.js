@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import personReducer from './personReducer';
+import personReducer from './peopleReducer';
 import authReducer from './authReducer';
 import landingReducer from './landingReducer';
 

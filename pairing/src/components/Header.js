@@ -9,7 +9,7 @@ const Header = () => {
                 Alpha Phi Omega Psi Pairing Tool
             </Link>
             <div className="right menu">
-                <Link to="/" className="item">
+                <Link to="/data/list" className="item">
                     All Data
                 </Link>
                 <GoogleButton />

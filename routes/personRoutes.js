@@ -50,7 +50,7 @@ module.exports = app => {
         res.send(people);
     });
 
-    app.delete('/api/delete/:personId', async (req, res) => {
+    app.delete('/api/delete/:personId', requireLogin, async (req, res) => {
         try {
             const removePerson = await Person.remove({
                 _id: req.params.personId
@@ -62,10 +62,25 @@ module.exports = app => {
         }
     });
 
-    app.get('/api/find/:personId', async (req, res) => {
+    app.get('/api/find/:personId', requireLogin, async (req, res) => {
         try {
             const person = await Person.find({ _id: req.params.personId });
             res.json(person);
+        } catch (err) {
+            res.json({ message: err });
+        }
+    });
+
+    app.patch('/api/edit/:personId', requireLogin, async (req, res) => {
+        try {
+            const { name, questions, preferences } = seperateFormValues(
+                req.body
+            );
+            const updatedPerson = await Person.updateOne(
+                { _id: req.params.personId },
+                { $set: { name, questions, preferences, _user: req.user.id } }
+            );
+            res.json(updatedPerson);
         } catch (err) {
             res.json({ message: err });
         }
