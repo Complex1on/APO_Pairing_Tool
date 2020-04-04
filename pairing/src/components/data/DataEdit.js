@@ -8,16 +8,17 @@ class DataEdit extends React.Component {
         this.props.fetchPerson(this.props.match.params.personId);
     }
 
-    onSubmit = formValues => {
+    onSubmit = (formValues) => {
         this.props.editPerson(this.props.match.params.personId, formValues);
     };
 
     createInitialValues = () => {
         let initVals = {};
-        Object.keys(this.props.person).map(key => {
+        Object.keys(this.props.person).map((key) => {
             const value = this.props.person[key];
 
             initVals.name = value.name;
+            initVals.type = value.type;
             for (let i = 0; i < value.questions.length; i++) {
                 let j = `Question${i + 1}`;
                 initVals[j] = value.questions[i];
@@ -50,11 +51,11 @@ class DataEdit extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         auth: state.auth,
         person: state.people,
-        numQ: state.numQ
+        numQ: state.numQ,
     };
 };
 

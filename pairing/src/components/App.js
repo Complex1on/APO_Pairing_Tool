@@ -45,6 +45,11 @@ class App extends React.Component {
                                 exact
                                 component={DataList}
                             />
+                            <Route
+                                path="/data/show"
+                                exact
+                                component={DataShow}
+                            />
                         </Switch>
                     </div>
                 </Router>

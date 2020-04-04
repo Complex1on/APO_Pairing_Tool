@@ -24,14 +24,40 @@ class DataCreate extends React.Component {
         );
     };
 
-    onSubmit = formValues => {
-        //console.log(formValues);
+    renderRadio = () => {
+        return (
+            <div className="inline fields">
+                <label>Select Big or Little: </label>
 
+                <Field
+                    className="ui radio checkbox"
+                    type="radio"
+                    component="input"
+                    name="type"
+                    tabIndex="0"
+                    value="big"
+                />
+                <label>Big</label>
+
+                <Field
+                    className="ui radio checkbox"
+                    type="radio"
+                    component="input"
+                    name="type"
+                    tabIndex="0"
+                    value="little"
+                />
+                <label>Little</label>
+            </div>
+        );
+    };
+
+    onSubmit = (formValues) => {
         this.props.onSubmit(formValues);
     };
 
     renderQuestions = (numQ, type) => {
-        return numQ.map(el => {
+        return numQ.map((el) => {
             let labelText = `Enter ${type} ${el}`;
             let questionName = `${type}${el}`;
 
@@ -45,15 +71,16 @@ class DataCreate extends React.Component {
             );
         });
     };
+
     render() {
         let numberOfQuestions = [];
         if (this.props.editing === 'true') {
             // Calculates the number of questions needed to be rendered to edit
             // so no conflict between that and numQ user has selected
-            Object.keys(this.props.person).map(key => {
-                const value = this.props.person[key];
-                for (let i = 0; i < value.questions.length; i++) {
-                    numberOfQuestions.push(i + 1);
+            const test = Object.keys(this.props.initialValues);
+            test.forEach((el) => {
+                if (el[0] === 'Q' && el[1] === 'u') {
+                    numberOfQuestions.push(el[8]);
                 }
             });
         } else {
@@ -71,8 +98,10 @@ class DataCreate extends React.Component {
                     label="Enter Name"
                 />
 
+                {this.renderRadio()}
                 {this.renderQuestions(numberOfQuestions, 'Question')}
                 {this.renderQuestions(numberOfQuestions, 'Preference')}
+
                 <button className="ui button primary" onSubmit={this.onSubmit}>
                     Submit
                 </button>
@@ -81,7 +110,8 @@ class DataCreate extends React.Component {
     }
 }
 
-const validate = formValues => {
+// Need to fix validation
+const validate = (formValues) => {
     const errors = {};
     if (!formValues.name) {
         errors.name = 'You must enter a name';
@@ -102,7 +132,7 @@ const validate = formValues => {
     return errors;
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return { numQ: state.numQ, person: state.people };
 };
 
@@ -111,5 +141,5 @@ let dataCreateOne = connect(mapStateToProps, {})(DataCreate);
 export default reduxForm({
     form: 'dataCreate',
     validate,
-    enableReinitialize: true
+    enableReinitialize: true,
 })(dataCreateOne);

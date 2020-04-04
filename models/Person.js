@@ -5,7 +5,8 @@ const personSchema = new Schema({
     name: String,
     questions: [Number],
     preferences: [Number],
-    _user: { type: Schema.Types.ObjectId, ref: 'User ' }
+    type: String,
+    _user: { type: Schema.Types.ObjectId, ref: 'User ' },
 });
 
 mongoose.model('person', personSchema);

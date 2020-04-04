@@ -3,11 +3,11 @@ const requireLogin = require('../middlewares/requireLogin');
 
 const Person = mongoose.model('person');
 
-const seperateFormValues = input => {
+const seperateFormValues = (input) => {
     let simplifiedObj = {};
     let questions = [];
     let preferences = [];
-    Object.keys(input).forEach(key => {
+    Object.keys(input).forEach((key) => {
         const value = input[key];
         if (key === 'name') {
             simplifiedObj.name = value;
@@ -18,21 +18,27 @@ const seperateFormValues = input => {
         if (key[0] === 'P' && key[9] === 'e') {
             preferences.push(value);
         }
+        if (key === 'type') {
+            simplifiedObj.type = value;
+        }
     });
     simplifiedObj.questions = questions;
     simplifiedObj.preferences = preferences;
     return simplifiedObj;
 };
 
-module.exports = app => {
+module.exports = (app) => {
     app.post('/api/person', requireLogin, async (req, res) => {
-        const { name, questions, preferences } = seperateFormValues(req.body);
+        const { name, questions, preferences, type } = seperateFormValues(
+            req.body
+        );
 
         const person = new Person({
             name,
             questions,
             preferences,
-            _user: req.user.id
+            type,
+            _user: req.user.id,
         });
 
         try {
@@ -53,7 +59,7 @@ module.exports = app => {
     app.delete('/api/delete/:personId', requireLogin, async (req, res) => {
         try {
             const removePerson = await Person.remove({
-                _id: req.params.personId
+                _id: req.params.personId,
             });
             //console.log(removePerson);
             res.json(removePerson);

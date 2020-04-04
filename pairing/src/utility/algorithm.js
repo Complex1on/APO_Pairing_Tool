@@ -7,17 +7,17 @@ console.log('testing pairing algorithm');
 const testLittleOne = {
     name: 'Evan',
     questions: [8, 2, 7],
-    preferences: [8, 3, 9]
+    preferences: [8, 3, 9],
 };
 const testLittleTwo = {
     name: 'Chad',
     questions: [4, 9, 6],
-    preferences: [4, 9, 7]
+    preferences: [4, 9, 7],
 };
 const testLittleThree = {
     name: 'Kate',
     questions: [5, 6, 7],
-    preferences: [5, 6, 7]
+    preferences: [5, 6, 7],
 };
 const LittlesList = [testLittleOne, testLittleTwo, testLittleThree];
 
@@ -25,32 +25,31 @@ const LittlesList = [testLittleOne, testLittleTwo, testLittleThree];
 const testBigOne = {
     name: 'Karen',
     questions: [7, 7, 9],
-    preferences: [5, 9, 7]
+    preferences: [5, 9, 7],
 };
 const testBigTwo = {
     name: 'Susan',
     questions: [9, 3, 2],
-    preferences: [6, 5, 5]
+    preferences: [6, 5, 5],
 };
 const testBigThree = {
     name: 'Brad',
     questions: [6, 2, 8],
-    preferences: [9, 8, 5]
+    preferences: [9, 8, 5],
 };
 const BigsList = [testBigOne, testBigTwo, testBigThree];
 
 const calculateTotal = (littles, bigs) => {
     let allData = [];
 
-    littles.forEach(el => {
+    littles.forEach((el) => {
         allData.push(calculatePerson(el, bigs));
     });
 
-    bigs.forEach(el => {
+    bigs.forEach((el) => {
         allData.push(calculatePerson(el, littles));
     });
 
-    //console.log(allData);
     return allData;
 };
 
@@ -78,14 +77,12 @@ const calculatePerson = (person, oppositeList) => {
     // sorting final list based on score
     final.sort((a, b) => (a.Score < b.Score ? 1 : -1));
 
-    //console.log(final);
-
     //returning person's name and person's list
     return { name: person.name, list: final };
 };
 
-const readData = data => {
-    data.forEach(el => {
+const readData = (data) => {
+    data.forEach((el) => {
         console.log(el.name);
         console.log(el.list);
         console.log('      ');

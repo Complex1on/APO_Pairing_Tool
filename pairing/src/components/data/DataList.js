@@ -8,8 +8,8 @@ class DataList extends React.Component {
         this.props.fetchPeople();
     }
 
-    renderPeople = peopleObj => {
-        return Object.keys(peopleObj).map(key => {
+    renderPeople = (peopleObj) => {
+        return Object.keys(peopleObj).map((key) => {
             const value = peopleObj[key];
             return (
                 <div className="item" key={value._id}>
@@ -52,7 +52,10 @@ class DataList extends React.Component {
     render() {
         return (
             <div>
-                <h1>Tesing Data List</h1>
+                <h1>Your Data List</h1>
+                <Link to="/data/show" className="ui button primary">
+                    Calculate List
+                </Link>
                 <div className="ui celled list">
                     {this.renderPeople(this.props.people)}
                 </div>
@@ -62,9 +65,9 @@ class DataList extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
-        people: state.people
+        people: state.people,
     };
 };
 export default connect(mapStateToProps, { fetchPeople })(DataList);
