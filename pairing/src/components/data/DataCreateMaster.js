@@ -4,7 +4,7 @@ import { submitPerson } from '../../actions';
 import DataCreate from './DataCreate';
 
 class DataCreateMaster extends React.Component {
-    onSubmit = formValuues => {
+    onSubmit = (formValuues) => {
         this.props.submitPerson(formValuues);
     };
 

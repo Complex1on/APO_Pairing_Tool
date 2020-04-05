@@ -1,12 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchPeople } from '../../actions';
+import { fetchPeople, editNumQ } from '../../actions';
+import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 
 class DataList extends React.Component {
     componentDidMount() {
         this.props.fetchPeople();
     }
+
+    onSubmit = (formValue) => {
+        this.props.editNumQ(formValue);
+    };
 
     renderPeople = (peopleObj) => {
         return Object.keys(peopleObj).map((key) => {
@@ -49,9 +54,34 @@ class DataList extends React.Component {
         );
     }
 
+    renderInput = ({ input, label }) => {
+        return (
+            <div className="ui input">
+                <label>{label}</label>
+                <input {...input} />
+            </div>
+        );
+    };
+
     render() {
         return (
-            <div>
+            <div className="ui container">
+                <form
+                    className="ui input"
+                    onSubmit={this.props.handleSubmit(this.onSubmit)}
+                >
+                    <Field
+                        name="numField"
+                        component={this.renderInput}
+                        label="Change Number of Questions"
+                    />
+                    <button
+                        className="ui button primary"
+                        onSubmit={this.onSubmit}
+                    >
+                        Change
+                    </button>
+                </form>
                 <h1>Your Data List</h1>
                 <Link to="/data/show" className="ui button primary">
                     Calculate List
@@ -59,6 +89,7 @@ class DataList extends React.Component {
                 <div className="ui celled list">
                     {this.renderPeople(this.props.people)}
                 </div>
+
                 {this.renderCreate()}
             </div>
         );
@@ -68,6 +99,15 @@ class DataList extends React.Component {
 const mapStateToProps = (state) => {
     return {
         people: state.people,
+        numQ: state.numQ,
     };
 };
-export default connect(mapStateToProps, { fetchPeople })(DataList);
+const DataListOne = connect(mapStateToProps, { fetchPeople, editNumQ })(
+    DataList
+);
+
+export default reduxForm({
+    form: 'numQ',
+    enableReinitialize: true,
+    initialValues: { numField: '5' },
+})(DataListOne);

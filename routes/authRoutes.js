@@ -1,10 +1,14 @@
 const passport = require('passport');
+const mongoose = require('mongoose');
 
-module.exports = app => {
+const requireLogin = require('../middlewares/requireLogin');
+const User = mongoose.model('users');
+
+module.exports = (app) => {
     app.get(
         '/auth/google',
         passport.authenticate('google', {
-            scope: ['profile', 'email']
+            scope: ['profile', 'email'],
         })
     );
 
@@ -23,5 +27,17 @@ module.exports = app => {
 
     app.get('/api/current_user', (req, res) => {
         res.send(req.user);
+    });
+
+    app.patch('/api/current_user', requireLogin, (req, res) => {
+        try {
+            console.log(req.body);
+            // const updatedUser = await User.updateOne(
+            //      { _user: req.user.id},
+            //      {$set: {numQ: req.body}}
+            // )
+        } catch (err) {
+            res.json({ message: err });
+        }
     });
 };
