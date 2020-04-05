@@ -100,14 +100,11 @@ const mapStateToProps = (state) => {
     return {
         people: state.people,
         numQ: state.numQ,
+        initialValues: { numField: state.numQ.length },
     };
 };
-const DataListOne = connect(mapStateToProps, { fetchPeople, editNumQ })(
-    DataList
-);
-
-export default reduxForm({
+const DataList1 = reduxForm({
     form: 'numQ',
-    enableReinitialize: true,
-    initialValues: { numField: '5' },
-})(DataListOne);
+})(DataList);
+
+export default connect(mapStateToProps, { fetchPeople, editNumQ })(DataList1);
