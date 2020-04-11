@@ -13,6 +13,14 @@ const calculateTotal = (littles, bigs) => {
         allData.push(calculatePerson(el, littles));
     });
 
+    littles.forEach((el) => {
+        allData.push(calculatePersonWeighted(el, bigs));
+    });
+
+    bigs.forEach((el) => {
+        allData.push(calculatePersonWeighted(el, littles));
+    });
+
     return allData;
 };
 
@@ -41,7 +49,36 @@ const calculatePerson = (person, oppositeList) => {
     final.sort((a, b) => (a.Score < b.Score ? 1 : -1));
 
     //returning person's name and person's list
-    return { name: person.name, list: final };
+    return { type: 'normal', name: person.name, list: final };
+};
+
+const calculatePersonWeighted = (person, oppositeList) => {
+    // Uses the preferences of person and the questions of opposite list
+    // to create potential bigs/littles list
+    let final = [];
+    let tempBigScore = 0;
+
+    // cycling through the opposite list
+    for (let i = 0; i < oppositeList.length; i++) {
+        tempBigScore = 0;
+        for (let j = 0; j < person.questions.length; j++) {
+            // cycling through the preference question of person and question of opposite
+            // adding to tempBigScore
+            let multi = 1;
+            if (person.weighted.find((el) => el === j + 1)) multi = 1.5;
+            let temp = person.preferences[j] - oppositeList[i].questions[j];
+            temp = (10 - Math.abs(temp)) * multi;
+            tempBigScore += temp;
+        }
+        // finish calculating tempBigScore
+        final.push({ Name: oppositeList[i].name, Score: tempBigScore });
+    }
+
+    // sorting final list based on score
+    final.sort((a, b) => (a.Score < b.Score ? 1 : -1));
+
+    //returning person's name and person's list
+    return { type: 'weighted', name: person.name, list: final };
 };
 
 class DataShow extends React.Component {
@@ -80,8 +117,10 @@ class DataShow extends React.Component {
         return Object.keys(lis).map((key) => {
             const value = lis[key];
             return (
-                <div key={value.name}>
-                    <h1>{value.name}'s List</h1>
+                <div key={value.name + value.type}>
+                    <h1>
+                        {value.name}'s {value.type} List
+                    </h1>
                     {this.renderIndivList(value.list)}
                 </div>
             );

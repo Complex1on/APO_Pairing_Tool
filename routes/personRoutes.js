@@ -7,6 +7,7 @@ const seperateFormValues = (input) => {
     let simplifiedObj = {};
     let questions = [];
     let preferences = [];
+    let weighted = [];
     Object.keys(input).forEach((key) => {
         const value = input[key];
         if (key === 'name') {
@@ -21,23 +22,33 @@ const seperateFormValues = (input) => {
         if (key === 'type') {
             simplifiedObj.type = value;
         }
+        if (key[1] === 'w' && value == true) {
+            let num = parseInt(key[0], 10);
+            weighted.push(num);
+        }
     });
     simplifiedObj.questions = questions;
     simplifiedObj.preferences = preferences;
+    simplifiedObj.weighted = weighted;
     return simplifiedObj;
 };
 
 module.exports = (app) => {
     app.post('/api/person', requireLogin, async (req, res) => {
-        const { name, questions, preferences, type } = seperateFormValues(
-            req.body
-        );
+        const {
+            name,
+            questions,
+            preferences,
+            type,
+            weighted,
+        } = seperateFormValues(req.body);
 
         const person = new Person({
             name,
             questions,
             preferences,
             type,
+            weighted,
             _user: req.user.id,
         });
 
@@ -58,7 +69,7 @@ module.exports = (app) => {
 
     app.delete('/api/delete/:personId', requireLogin, async (req, res) => {
         try {
-            const removePerson = await Person.remove({
+            const removePerson = await Person.deleteOne({
                 _id: req.params.personId,
             });
             //console.log(removePerson);
@@ -79,12 +90,25 @@ module.exports = (app) => {
 
     app.patch('/api/edit/:personId', requireLogin, async (req, res) => {
         try {
-            const { name, questions, preferences } = seperateFormValues(
-                req.body
-            );
+            const {
+                name,
+                questions,
+                preferences,
+                type,
+                weighted,
+            } = seperateFormValues(req.body);
             const updatedPerson = await Person.updateOne(
                 { _id: req.params.personId },
-                { $set: { name, questions, preferences, _user: req.user.id } }
+                {
+                    $set: {
+                        name,
+                        questions,
+                        preferences,
+                        type,
+                        weighted,
+                        _user: req.user.id,
+                    },
+                }
             );
             res.json(updatedPerson);
         } catch (err) {

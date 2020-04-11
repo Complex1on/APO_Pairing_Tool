@@ -72,6 +72,23 @@ class DataCreate extends React.Component {
         });
     };
 
+    renderWeighted = (numQ) => {
+        return numQ.map((el) => {
+            return (
+                <div key={'weighteded div' + el}>
+                    <label>{'weighted' + el}</label>
+                    <Field
+                        key={'weighted' + el}
+                        className="ui checkbox"
+                        name={el + 'weighted'}
+                        component="input"
+                        type="checkbox"
+                    />
+                </div>
+            );
+        });
+    };
+
     render() {
         let numberOfQuestions = [];
         if (this.props.editing === 'true') {
@@ -99,8 +116,12 @@ class DataCreate extends React.Component {
                 />
 
                 {this.renderRadio()}
+
                 {this.renderQuestions(numberOfQuestions, 'Question')}
                 {this.renderQuestions(numberOfQuestions, 'Preference')}
+                <div className="inline fields">
+                    {this.renderWeighted(numberOfQuestions)}
+                </div>
 
                 <button className="ui button primary" onSubmit={this.onSubmit}>
                     Submit

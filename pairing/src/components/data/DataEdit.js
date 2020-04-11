@@ -28,6 +28,11 @@ class DataEdit extends React.Component {
                 let j = `Preference${i + 1}`;
                 initVals[j] = value.preferences[i];
             }
+
+            for (let i = 0; i < value.weighted.length; i++) {
+                let j = `${value.weighted[i]}weighted`;
+                initVals[j] = true;
+            }
         });
 
         return initVals;

@@ -6,6 +6,7 @@ const personSchema = new Schema({
     questions: [Number],
     preferences: [Number],
     type: String,
+    weighted: [Number],
     _user: { type: Schema.Types.ObjectId, ref: 'User ' },
 });
 
